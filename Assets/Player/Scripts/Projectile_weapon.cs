@@ -12,10 +12,11 @@ public class Projectile_weapon : MonoBehaviour
     [SerializeField] private GameObject bullet;
 
     //bullet force
-    [SerializeField] private float shootForce, upwardForce;
+    [SerializeField] public float shootForce, upwardForce;
 
     //Weapon stats
-    [SerializeField] private float fireRate, spread, reloadTime, timeBetweenShots;
+    [SerializeField] public float spread;
+    [SerializeField] private float fireRate, reloadTime, timeBetweenShots;
     [SerializeField] public int magazineSize, bulletsLeft; // Show in UI;
     [SerializeField] private int bulletsPerTap;
     [SerializeField] private bool allowButtonHold;
@@ -102,6 +103,7 @@ public class Projectile_weapon : MonoBehaviour
 
         //Find hit position using raycast
         Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5.0f);
         RaycastHit hit;
 
         //check if ray hits something
