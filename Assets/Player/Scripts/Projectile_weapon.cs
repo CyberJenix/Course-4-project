@@ -16,11 +16,11 @@ public class Projectile_weapon : MonoBehaviour
 
     //Weapon stats
     [SerializeField] private float fireRate, spread, reloadTime, timeBetweenShots;
-    [SerializeField] public int magazineSize;
+    [SerializeField] public int magazineSize, bulletsLeft; // Show in UI;
     [SerializeField] private int bulletsPerTap;
     [SerializeField] private bool allowButtonHold;
 
-    private int bulletsLeft, bulletsShot;
+    [SerializeField] private int bulletsShot;
 
     //bool checks
     [SerializeField] private bool shooting, readyToShoot, reloading;

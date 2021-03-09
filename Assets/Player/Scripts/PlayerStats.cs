@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] public float health,hunger,thirst;
+    [SerializeField] public float health,hunger,thirst; // Show in UI
     [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt =0.02f, thirstDt=0.02f;
     [SerializeField] private bool isDead = false;
 
