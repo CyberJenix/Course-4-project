@@ -32,6 +32,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5697041007061256066, guid: ca3c743206d05ee4db907f27b4892858,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 5697041007061256069, guid: ca3c743206d05ee4db907f27b4892858,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

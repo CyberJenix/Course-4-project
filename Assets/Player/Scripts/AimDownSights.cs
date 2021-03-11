@@ -28,13 +28,13 @@ public class AimDownSights : MonoBehaviour
             coordsHolder = adsCoords;
             aiming = true;
            // gun_script.shootForce = -gun_script.shootForce;
-            gun_script.spread =  gun_script.spread/30;
+           // gun_script.spread =  gun_script.spread/30;
         }
         else if (aiming)
         {
             coordsHolder = new Vector3(0, 0, 0);
             aiming = false;
-            gun_script.spread = gun_script.spread*30;
+           // gun_script.spread = gun_script.spread*30;
            // gun_script.shootForce = -gun_script.shootForce;
         }
 

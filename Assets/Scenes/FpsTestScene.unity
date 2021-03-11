@@ -127,7 +127,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh15128
+  m_Name: pb_Mesh15126
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -509,7 +509,7 @@ GameObject:
   - component: {fileID: 621877289}
   - component: {fileID: 621877288}
   - component: {fileID: 621877287}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Prism
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -902,7 +902,7 @@ GameObject:
   - component: {fileID: 633735335}
   - component: {fileID: 633735337}
   - component: {fileID: 633735336}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FirstPersonPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,7 +975,7 @@ MonoBehaviour:
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1024
   isGrounded: 0
   isCrouching: 0
   isProne: 0
@@ -1189,7 +1189,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh15060
+  m_Name: pb_Mesh15058
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1713,7 +1713,7 @@ GameObject:
   - component: {fileID: 1018477589}
   - component: {fileID: 1018477588}
   - component: {fileID: 1018477592}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Cube-preview(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7394,7 +7394,7 @@ GameObject:
   - component: {fileID: 1130418676}
   - component: {fileID: 1130418675}
   - component: {fileID: 1130418679}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Cube-preview(Clone)(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10098,7 +10098,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh15096
+  m_Name: pb_Mesh15094
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10602,7 +10602,7 @@ GameObject:
   - component: {fileID: 1363682755}
   - component: {fileID: 1363682754}
   - component: {fileID: 1363682753}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
