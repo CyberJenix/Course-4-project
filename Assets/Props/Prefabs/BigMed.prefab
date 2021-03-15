@@ -80,9 +80,9 @@ MonoBehaviour:
   allowInvoke: 1
   playerStats: {fileID: 0}
   equipScript: {fileID: 1282776264574296691}
-  heal: 50
+  heal: 100
   food: 0
-  water: 50
+  water: 0
 --- !u!114 &1282776264574296691
 MonoBehaviour:
   m_ObjectHideFlags: 0
