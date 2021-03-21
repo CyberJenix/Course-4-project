@@ -13,7 +13,7 @@ public class Guard : MonoBehaviour
     private int curWaypointIndex, newWayPointIndex;
     private Vector3 curWaypoint, distanceToWaypoint;
     private Vector3[] waypoints;
-    private NavMeshAgent agent;
+    private NavMeshAgent _agent;
     private bool isInAudibleRange, isInSightRange, isInAttackRange, busy, walkForward;
 
     enum State
@@ -40,9 +40,9 @@ public class Guard : MonoBehaviour
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = speed;
-        agent.angularSpeed = angularSpeed;
+        _agent = GetComponent<NavMeshAgent>();
+        _agent.speed = speed;
+        _agent.angularSpeed = angularSpeed;
         curState = State.Calm;
     }
 
@@ -64,7 +64,7 @@ public class Guard : MonoBehaviour
     {
         if (!busy)
         {
-            agent.SetDestination(curWaypoint);
+            _agent.SetDestination(curWaypoint);
             busy = !busy;
         }
 
