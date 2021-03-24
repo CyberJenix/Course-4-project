@@ -10,14 +10,14 @@ public class Guard : MonoBehaviour
     public int trustfulness;
     public float threshold;
 
-    private int curWaypointIndex, newWayPointIndex;
-    private Vector3 curWaypoint, distanceToWaypoint;
-    private Vector3[] waypoints;
-    private NavMeshAgent _agent;
-    private bool isInAudibleRange, isInSightRange, isInAttackRange, busy, walkForward;
+    public int curWaypointIndex, newWayPointIndex;
+    public Vector3 curWaypoint, distanceToWaypoint;
+    public Vector3[] waypoints;
+    public NavMeshAgent _agent;
+    public bool isInAudibleRange, isInSightRange, isInAttackRange, busy, walkForward;
 
     enum State
-    { 
+    {
         Calm,
         Alert,
         Alarmed,
@@ -29,13 +29,13 @@ public class Guard : MonoBehaviour
     {
         Vector3 startPos = pathHolder.GetChild(0).position;
         Vector3 prevPos = startPos;
-        foreach(Transform waypoint in pathHolder)
+        foreach (Transform waypoint in pathHolder)
         {
             Gizmos.DrawSphere(waypoint.position, .3f);
             Gizmos.DrawLine(prevPos, waypoint.position);
             prevPos = waypoint.position;
         }
-        if(isPathClosed) Gizmos.DrawLine(prevPos, startPos);
+        if (isPathClosed) Gizmos.DrawLine(prevPos, startPos);
     }
 
     private void Awake()
@@ -50,7 +50,7 @@ public class Guard : MonoBehaviour
     void Start()
     {
         waypoints = new Vector3[pathHolder.childCount];
-        for (int i = 0; i < waypoints.Length; i++) 
+        for (int i = 0; i < waypoints.Length; i++)
         {
             waypoints[i] = pathHolder.GetChild(i).position;
         }
@@ -60,7 +60,7 @@ public class Guard : MonoBehaviour
 
     }
 
-    void Patroling() 
+    void Patroling()
     {
         if (!busy)
         {
@@ -70,7 +70,7 @@ public class Guard : MonoBehaviour
 
         distanceToWaypoint = transform.position - curWaypoint;
 
-        if (distanceToWaypoint.magnitude <= threshold) 
+        if (distanceToWaypoint.magnitude <= threshold)
         {
             newWayPointIndex = curWaypointIndex + 1;
             if (newWayPointIndex > 0 && newWayPointIndex % waypoints.Length == 0 && !isPathClosed)
@@ -93,7 +93,7 @@ public class Guard : MonoBehaviour
 
     void Investigating()
     {
-        
+
     }
 
     void Attack()
@@ -104,7 +104,7 @@ public class Guard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (curState) 
+        switch (curState)
         {
             case State.Calm:
                 Patroling();

@@ -5,33 +5,79 @@ using UnityEngine.AI;
 
 public class enemyAI : MonoBehaviour
 {
+    // Generic variables
     private NavMeshAgent agent;
-    private LayerMask isDefault;
-    public List<Transform> targets = new List<Transform>();
+    [SerializeField] float speed;
+    [SerializeField] float angularSpeed;
+
     public Transform activeEnemy;
+    private LayerMask isDefault;
     public LayerMask isGround, isPlayer;
-    
+    [SerializeField] private List<Transform> targets = new List<Transform>();
 
     // Patroling
-    public Vector3 walkPoint;
-    bool walkPointSet;
+    private bool walkPointSet;
+
+    [SerializeField] private Transform pathHolder;
+    [SerializeField] private Vector3[] waypoints;
+    [SerializeField] private Vector3 curWayPoint;
+    private int curWaypointIndex, newWayPointIndex;
+    private bool walkForward, busy;
+    [SerializeField] private bool isPathClosed;
+    [SerializeField] private float distanceThreshold;
+    [SerializeField] private float delay;
 
     // Attacking
-    public float timeBetweenAttacks;
-    bool alreadyAttacked, enemyAcquired;
+    [SerializeField]private float timeBetweenAttacks;
+    private bool alreadyAttacked, enemyAcquired;
 
+    // Sensors
     [SerializeField] private float DOV;
     [SerializeField] private float FOV;
     [SerializeField] private float attackRange;
 
+    // State switch conditions
     bool playersInSight, playerInAttackRange;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = speed;
+        agent.angularSpeed = angularSpeed;
+
         isDefault = LayerMask.GetMask("Default");
         StartCoroutine("FindWithDelay", .5f);
         enemyAcquired = false;
+    }
+
+    private void Start()
+    {
+        if(pathHolder)
+        {
+            waypoints = new Vector3[pathHolder.childCount];
+            for (int i = 0; i < waypoints.Length; i++)
+            {
+                waypoints[i] = pathHolder.GetChild(i).position;
+            }
+            curWaypointIndex = 0;
+            curWayPoint = waypoints[curWaypointIndex];
+            walkForward = true;
+        }
+
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        playersInSight = targets.Count > 0;
+
+        if (playersInSight)
+            AcquireNearestTarget();
+
+        if (!playersInSight && !playerInAttackRange) Patrolling();
+        if ( enemyAcquired  && !playerInAttackRange) ChasePlayer();
+        if ( enemyAcquired  &&  playerInAttackRange) AttackPlayer();
+
     }
 
     IEnumerator FindWithDelay(float delay) 
@@ -50,7 +96,6 @@ public class enemyAI : MonoBehaviour
 
         foreach (Collider target in targetsInViewRadius) 
         {
-            //RaycastHit hit;
             Transform tTransform = target.transform;
             Vector3 dirToTarget = (tTransform.position - transform.position).normalized;
             if(Vector3.Angle(transform.forward, dirToTarget) < FOV * .5)
@@ -75,17 +120,14 @@ public class enemyAI : MonoBehaviour
         return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0, Mathf.Cos(angle * Mathf.Deg2Rad));
     }
 
-     // Update is called once per frame
-    void Update()
+    private void Patrolling() 
     {
-        playersInSight = targets.Count > 0;
-        //playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, isPlayer);
-
-        if (playersInSight)
-            AcquireNearestTarget();
-        //if (!playersInSight && !playerInAttackRange) Patroling();
-        if ( enemyAcquired && !playerInAttackRange) ChasePlayer();
-        if ( enemyAcquired &&  playerInAttackRange) AttackPlayer();
+        if (pathHolder)
+        {
+            Point2Point();
+            return;
+        }
+        Wandering();
     }
 
     private void AcquireNearestTarget() 
@@ -109,6 +151,7 @@ public class enemyAI : MonoBehaviour
 
         Vector3 temp = new Vector3(x, transform.position.y + 100.0f, z);
         Vector3 down = new Vector3(x, transform.position.y, z);
+        
         Ray ray = new Ray(temp, down);
         RaycastHit hit;
 
@@ -116,23 +159,54 @@ public class enemyAI : MonoBehaviour
 
         float y = transform.position.y + hit.distance;
 
-        walkPoint = new Vector3(x, y, z);
+        curWayPoint = new Vector3(x, y, z);
 
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, isGround))
+        if (Physics.Raycast(curWayPoint, -transform.up, 2f, isGround))
             walkPointSet = true;
     }
 
-    private void Patroling()
+    private void Point2Point() 
+    {
+        if (!busy)
+        {
+            agent.SetDestination(curWayPoint);
+            busy = true;
+        }
+
+        Vector3 distanceToWaypoint = transform.position - curWayPoint;
+
+        if (distanceToWaypoint.magnitude <= distanceThreshold)
+        {
+            newWayPointIndex = curWaypointIndex + 1;
+            if (newWayPointIndex > 0 && newWayPointIndex % waypoints.Length == 0 && !isPathClosed)
+                walkForward = false;
+            else if (newWayPointIndex <= 1 && !isPathClosed)
+                walkForward = true;
+
+            if (!walkForward)
+            {
+                newWayPointIndex = curWaypointIndex - 1;
+            }
+
+            curWaypointIndex = newWayPointIndex % waypoints.Length;
+            curWayPoint = waypoints[curWaypointIndex];
+            Invoke(nameof(LookAround), delay);
+        }
+    }
+
+    private void LookAround() { busy = false; }
+
+    private void Wandering()
     {
         if (!walkPointSet) SearchWalkPoint();
 
         if(walkPointSet) 
-            agent.SetDestination(walkPoint);
+            agent.SetDestination(curWayPoint);
 
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+        Vector3 distanceToWalkPoint = transform.position - curWayPoint;
 
         // Walkpoint reached
-        if (distanceToWalkPoint.magnitude < 1.0f)
+        if (distanceToWalkPoint.magnitude < distanceThreshold)
             walkPointSet = false;
     }
 
@@ -147,8 +221,14 @@ public class enemyAI : MonoBehaviour
          
     }
 
+    
+
     private void AttackPlayer()
     {
+        Vector3 distToTarg = transform.position - activeEnemy.position;
+        if (distToTarg.magnitude > attackRange)
+            playerInAttackRange = false;
+
         if (!alreadyAttacked)
         {
             ///Attack code
@@ -168,26 +248,45 @@ public class enemyAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // Attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
 
+        // Distance of view
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, DOV);
 
+        // Field of view
         Vector3 tempA = DirFromAngle(FOV * .5f, false);
         Vector3 tempB = DirFromAngle(-FOV * .5f, false);
-
         Gizmos.DrawRay(transform.position, tempA * DOV);
         Gizmos.DrawRay(transform.position, tempB * DOV);
 
+        // All visible targets
         foreach (Transform target in targets)
             Gizmos.DrawLine(transform.position, target.position);
 
+        // Active target
         Gizmos.color = Color.red;
         if (enemyAcquired)
             Gizmos.DrawLine(transform.position, activeEnemy.position);
 
-        Gizmos.DrawSphere(walkPoint, .5f);
+        //Path waypoints
+        if(pathHolder)
+        {
+            Vector3 startPos = pathHolder.GetChild(0).position;
+            Vector3 prevPos = startPos;
+            foreach (Transform waypoint in pathHolder)
+            {
+                Gizmos.DrawSphere(waypoint.position, .3f);
+                Gizmos.DrawLine(prevPos, waypoint.position);
+                prevPos = waypoint.position;
+            }
+            if (isPathClosed) Gizmos.DrawLine(prevPos, startPos);
+            return;
+        }
+        // Random walk points
+        Gizmos.DrawSphere(curWayPoint, .5f);
     }
 
 }
