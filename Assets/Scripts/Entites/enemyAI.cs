@@ -260,6 +260,7 @@ public class enemyAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        /*
         // Attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
@@ -282,6 +283,7 @@ public class enemyAI : MonoBehaviour
         Gizmos.color = Color.red;
         if (enemyAcquired)
             Gizmos.DrawLine(transform.position, activeEnemy.position);
+        */
 
         //Path waypoints
         if(pathHolder)

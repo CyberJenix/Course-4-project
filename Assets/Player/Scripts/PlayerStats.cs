@@ -3,8 +3,9 @@
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] public float health,hunger,thirst; // Show in UI
-    [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt =0.02f, thirstDt=0.02f;
+    [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt = 0.02f, thirstDt = 0.02f;
     [SerializeField] private bool isDead = false;
+    [SerializeField] public bool isSlotFull = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +53,8 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hunger = hunger - hungerDt * Time.deltaTime;
-        thirst = thirst - thirstDt * Time.deltaTime;
+        hunger -= hungerDt * Time.deltaTime;
+        thirst -= thirstDt * Time.deltaTime;
 
         if (hunger <= 0)
         {

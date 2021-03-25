@@ -11,10 +11,11 @@ public class PickUpAndDrop : MonoBehaviour
     [SerializeField] private Rigidbody rigidBody;
     [SerializeField] private BoxCollider collider;
     [SerializeField] private Transform player, gunContainer, camera;
+    [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float pickUpRange;
     [SerializeField] private float dropForwardForce, dropUpwardForce;
     [SerializeField] public bool equipped;
-    [SerializeField] private static bool slotFull; //static - changind this in one script will change in all otherscripts
+    //[SerializeField] private static bool slotFull; //static - changind this in one script will change in all otherscripts
     [SerializeField] Vector3 distanceToPlayer, drop_velocity;
 
     // Start is called before the first frame update
@@ -24,28 +25,28 @@ public class PickUpAndDrop : MonoBehaviour
         controls.WorldActions.Enable();
         controls.WorldActions.Interact.performed += context => PickUp();
         controls.WorldActions.Drop.performed += context => Drop();
+        playerStats = player.GetComponent<PlayerStats>();
 
         if (!equipped)
         {
-            gun_script.enabled = false;
-            rigidBody.isKinematic = false;
-            collider.isTrigger = false;
+            gun_script.enabled      = false;
+            rigidBody.isKinematic   = false;
+            collider.isTrigger      = false;
         }
         if (equipped)
         {
-            gun_script.enabled = true;
-            rigidBody.isKinematic = true;
-            collider.isTrigger = true;
-            slotFull = true;
+            gun_script.enabled      = true;
+            rigidBody.isKinematic   = true;
+            collider.isTrigger      = true;
         }
     }
 
     private void PickUp()
     {
-        if (!equipped && distanceToPlayer.magnitude <= pickUpRange && !slotFull)
+        if (!equipped && distanceToPlayer.magnitude <= pickUpRange && !playerStats.isSlotFull)
         {
             equipped = true;
-            slotFull = true; //So u cant pick up any other gun
+            playerStats.isSlotFull = true; // So u cant pick up any other item
 
             //Make weapon a child of the camera and move it to default position
             transform.SetParent(gunContainer);
@@ -54,11 +55,11 @@ public class PickUpAndDrop : MonoBehaviour
             transform.localScale = Vector3.one;
 
             //Make Rigidbody kinematic and BoxCollider a trigger
-            rigidBody.isKinematic = true;
-            collider.isTrigger = true;
+            rigidBody.isKinematic   = true;
+            collider.isTrigger      = true;
 
             //Enable script
-            gun_script.enabled = true;
+            gun_script.enabled      = true;
         }
     }
 
@@ -67,15 +68,15 @@ public class PickUpAndDrop : MonoBehaviour
         if (equipped )
         {
 
-            equipped = false;
-            slotFull = false;
+            equipped                = false;
+            playerStats.isSlotFull  = false;
 
            
-            transform.SetParent(null); //Set parent to null
+            transform.SetParent(null); // Set parent to null
 
             
-            rigidBody.isKinematic = false;//Make Rigidbody not kinematic and BoxCollider normal
-            collider.isTrigger = false;
+            rigidBody.isKinematic   = false; // Make Rigidbody not kinematic and BoxCollider normal
+            collider.isTrigger      = false;
 
             //AddForce
             rigidBody.AddForce(camera.forward * dropForwardForce, ForceMode.Impulse);
@@ -85,7 +86,7 @@ public class PickUpAndDrop : MonoBehaviour
              rigidBody.AddTorque(new Vector3(random, random, random) * 10);
 
             //Disable script
-            gun_script.enabled = false;
+            gun_script.enabled      = false;
         }
     }
 
