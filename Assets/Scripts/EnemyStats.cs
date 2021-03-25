@@ -15,11 +15,10 @@ public class EnemyStats : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        if (health <= 0)
         {
-            if (health <= 0)
-            {
-                isDead = true;
-            }
+            health = 0;
+            isDead = true;
         }
     }
 

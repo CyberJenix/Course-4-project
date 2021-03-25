@@ -7,29 +7,29 @@ public class enemyAI : MonoBehaviour
 {
     // Generic variables
     private NavMeshAgent agent;
-    [SerializeField] float speed;
-    [SerializeField] float angularSpeed;
+    [SerializeField] private float speed;
+    [SerializeField] private float angularSpeed;
 
-    public Transform activeEnemy;
-    private LayerMask isDefault;
-    public LayerMask isGround, isPlayer;
+    [SerializeField] private LayerMask isDefault;
+    [SerializeField] private LayerMask isGround, isPlayer;
+
+    [SerializeField] private Transform activeEnemy;
     [SerializeField] private List<Transform> targets = new List<Transform>();
 
     // Patroling
-    private bool walkPointSet;
-
+    [SerializeField] private bool walkPointSet;
     [SerializeField] private Transform pathHolder;
     [SerializeField] private Vector3[] waypoints;
     [SerializeField] private Vector3 curWayPoint;
-    private int curWaypointIndex, newWayPointIndex;
-    private bool walkForward, busy;
+    [SerializeField] private int curWaypointIndex, newWayPointIndex;
+    [SerializeField] private bool walkForward, busy;
     [SerializeField] private bool isPathClosed;
     [SerializeField] private float distanceThreshold;
     [SerializeField] private float delay;
 
     // Attacking
-    [SerializeField]private float timeBetweenAttacks;
-    private bool alreadyAttacked, enemyAcquired;
+    [SerializeField] private float timeBetweenAttacks;
+    [SerializeField] private bool alreadyAttacked, enemyAcquired;
 
     // Sensors
     [SerializeField] private float DOV;
@@ -37,7 +37,7 @@ public class enemyAI : MonoBehaviour
     [SerializeField] private float attackRange;
 
     // State switch conditions
-    bool playersInSight, playerInAttackRange;
+    [SerializeField] bool playersInSight, playerInAttackRange;
 
     private void Awake()
     {
@@ -124,6 +124,7 @@ public class enemyAI : MonoBehaviour
     {
         if (pathHolder)
         {
+            busy = false;
             Point2Point();
             return;
         }
@@ -169,6 +170,7 @@ public class enemyAI : MonoBehaviour
     {
         if (!busy)
         {
+            agent.isStopped = false;
             agent.SetDestination(curWayPoint);
             busy = true;
         }
@@ -212,13 +214,20 @@ public class enemyAI : MonoBehaviour
 
     private void ChasePlayer()
     {
-        
-          agent.SetDestination(activeEnemy.position);
-          
-          Vector3 distToTarg = transform.position - activeEnemy.position;
-          if (distToTarg.magnitude < attackRange - .1f)
+
+        agent.SetDestination(activeEnemy.position);
+        Vector3 distToTarg = transform.position - activeEnemy.position;
+        if (distToTarg.magnitude < attackRange - .1f)
             playerInAttackRange = true;
-         
+
+        if (distToTarg.magnitude > DOV)
+        {
+            agent.isStopped = true;
+            activeEnemy = null;
+            enemyAcquired = false;
+        }
+
+
     }
 
     
@@ -228,6 +237,9 @@ public class enemyAI : MonoBehaviour
         Vector3 distToTarg = transform.position - activeEnemy.position;
         if (distToTarg.magnitude > attackRange)
             playerInAttackRange = false;
+
+        if (distToTarg.magnitude > DOV)
+            enemyAcquired = false;
 
         if (!alreadyAttacked)
         {

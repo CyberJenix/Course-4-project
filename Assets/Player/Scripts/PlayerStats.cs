@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -19,6 +17,7 @@ public class PlayerStats : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
+            health = 0;
             isDead = true;
         }
     }
@@ -55,5 +54,18 @@ public class PlayerStats : MonoBehaviour
     {
         hunger = hunger - hungerDt * Time.deltaTime;
         thirst = thirst - thirstDt * Time.deltaTime;
+
+        if (hunger <= 0)
+        {
+            hunger = 0;
+            TakeDamage(hungerDt * Time.deltaTime);
+        }
+
+        if (thirst <= 0)
+        {
+            thirst = 0;
+            TakeDamage(thirstDt * Time.deltaTime);
+        }
+
     }
 }
