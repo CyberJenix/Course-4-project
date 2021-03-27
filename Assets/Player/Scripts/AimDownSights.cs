@@ -15,9 +15,13 @@ public class AimDownSights : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controls = new PlayerControls();
-        controls.Enable();
-        controls.WorldActions.Aim.performed += context => Aim();
+        if(!gun_script.bot)
+        {
+            controls = new PlayerControls();
+            controls.Enable();
+            controls.WorldActions.Aim.performed += context => Aim();
+        }
+            
         divider = gun_script.spread;
     }
 
