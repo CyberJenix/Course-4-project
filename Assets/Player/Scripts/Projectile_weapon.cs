@@ -21,7 +21,7 @@ public class Projectile_weapon : MonoBehaviour
     [SerializeField] private int bulletsShot;
 
     //bool checks
-    [SerializeField] internal bool shooting, readyToShoot, reloading; 
+    [SerializeField] private bool shooting, readyToShoot, reloading; 
     public bool bot;
 
     //References
