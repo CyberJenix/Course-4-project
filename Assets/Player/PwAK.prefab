@@ -53,7 +53,7 @@ MonoBehaviour:
   bullet: {fileID: 9216828993008265288, guid: ff947b98596bcf64185af0d90665c000, type: 3}
   shootForce: 200
   upwardForce: 0
-  spread: 1
+  spread: 0.25
   fireRate: 0.1
   reloadTime: 1
   timeBetweenShots: 1
@@ -65,6 +65,7 @@ MonoBehaviour:
   shooting: 0
   readyToShoot: 0
   reloading: 0
+  bot: 0
   camera: {fileID: 0}
   attackPoint: {fileID: 9001454771833616505}
   allowInvoke: 1
@@ -86,6 +87,7 @@ MonoBehaviour:
   player: {fileID: 0}
   gunContainer: {fileID: 0}
   camera: {fileID: 0}
+  playerStats: {fileID: 0}
   pickUpRange: 4
   dropForwardForce: 4
   dropUpwardForce: 3
