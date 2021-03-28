@@ -14,7 +14,7 @@ public class PickUpAndDrop : MonoBehaviour
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private float pickUpRange;
     [SerializeField] private float dropForwardForce, dropUpwardForce;
-    [SerializeField] public bool equipped;
+    [SerializeField] internal bool equipped;
     //[SerializeField] private static bool slotFull; //static - changind this in one script will change in all otherscripts
     [SerializeField] Vector3 distanceToPlayer, drop_velocity;
 
@@ -71,9 +71,7 @@ public class PickUpAndDrop : MonoBehaviour
             equipped                = false;
             playerStats.isSlotFull  = false;
 
-           
             transform.SetParent(null); // Set parent to null
-
             
             rigidBody.isKinematic   = false; // Make Rigidbody not kinematic and BoxCollider normal
             collider.isTrigger      = false;
@@ -82,8 +80,8 @@ public class PickUpAndDrop : MonoBehaviour
             rigidBody.AddForce(camera.forward * dropForwardForce, ForceMode.Impulse);
             rigidBody.AddForce(camera.up * dropUpwardForce, ForceMode.Impulse);
             //Add random rotation
-             float random = Random.Range(-1f, 1f);
-             rigidBody.AddTorque(new Vector3(random, random, random) * 10);
+            float random = Random.Range(-1f, 1f);
+            rigidBody.AddTorque(new Vector3(random, random, random) * 10);
 
             //Disable script
             gun_script.enabled      = false;
