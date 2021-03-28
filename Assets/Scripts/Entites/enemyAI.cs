@@ -9,6 +9,9 @@ public class enemyAI : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] private float speed;
     [SerializeField] private float angularSpeed;
+    [SerializeField] private Rigidbody body;
+    [SerializeField] private EnemyStats stats;
+    [SerializeField] private CapsuleCollider eCollider;
 
     [SerializeField] private LayerMask isDefault;
     [SerializeField] private LayerMask isGround, isPlayer;
@@ -37,13 +40,20 @@ public class enemyAI : MonoBehaviour
     [SerializeField] private float attackRange;
 
     // State switch conditions
-    [SerializeField] bool playersInSight, playerInAttackRange;
+    [SerializeField] private bool playersInSight, playerInAttackRange;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
         agent.angularSpeed = angularSpeed;
+
+        body = GetComponent<Rigidbody>();
+        body.isKinematic = false;
+
+        eCollider = GetComponent<CapsuleCollider>();
+
+        stats = GetComponent<EnemyStats>();
 
         isDefault = LayerMask.GetMask("Default");
         StartCoroutine("FindWithDelay", .5f);
@@ -69,14 +79,23 @@ public class enemyAI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        playersInSight = targets.Count > 0;
+        if(!stats.isDead)
+        {
+            playersInSight = targets.Count > 0;
 
-        if (playersInSight)
-            AcquireNearestTarget();
+            if (playersInSight) AcquireNearestTarget();
 
-        if (!playersInSight && !playerInAttackRange) Patrolling();
-        if ( enemyAcquired  && !playerInAttackRange) ChasePlayer();
-        if ( enemyAcquired  &&  playerInAttackRange) AttackPlayer();
+
+
+            if (!playersInSight && !playerInAttackRange) Patrolling();
+            if (enemyAcquired && !playerInAttackRange) ChasePlayer();
+            if (enemyAcquired && playerInAttackRange) AttackPlayer();
+            return;
+        }
+        agent.isStopped     = true;
+        body.isKinematic    = true;
+        Destroy(gameObject, 10.0f);
+
 
     }
 
@@ -154,9 +173,8 @@ public class enemyAI : MonoBehaviour
         Vector3 down = new Vector3(x, transform.position.y, z);
         
         Ray ray = new Ray(temp, down);
-        RaycastHit hit;
 
-        Physics.Raycast(ray, out hit, isGround);
+        Physics.Raycast(ray, out RaycastHit hit, isGround);
 
         float y = transform.position.y + hit.distance;
 
@@ -180,15 +198,10 @@ public class enemyAI : MonoBehaviour
         if (distanceToWaypoint.magnitude <= distanceThreshold)
         {
             newWayPointIndex = curWaypointIndex + 1;
-            if (newWayPointIndex > 0 && newWayPointIndex % waypoints.Length == 0 && !isPathClosed)
-                walkForward = false;
-            else if (newWayPointIndex <= 1 && !isPathClosed)
-                walkForward = true;
+            if (newWayPointIndex > 0 && newWayPointIndex % waypoints.Length == 0 && !isPathClosed) walkForward = false;
+            else if (newWayPointIndex <= 1 && !isPathClosed) walkForward = true;
 
-            if (!walkForward)
-            {
-                newWayPointIndex = curWaypointIndex - 1;
-            }
+            if (!walkForward) newWayPointIndex = curWaypointIndex - 1;
 
             curWaypointIndex = newWayPointIndex % waypoints.Length;
             curWayPoint = waypoints[curWaypointIndex];
@@ -202,8 +215,7 @@ public class enemyAI : MonoBehaviour
     {
         if (!walkPointSet) SearchWalkPoint();
 
-        if(walkPointSet) 
-            agent.SetDestination(curWayPoint);
+        if(walkPointSet) agent.SetDestination(curWayPoint);
 
         Vector3 distanceToWalkPoint = transform.position - curWayPoint;
 
@@ -214,11 +226,14 @@ public class enemyAI : MonoBehaviour
 
     private void ChasePlayer()
     {
-
         agent.SetDestination(activeEnemy.position);
         Vector3 distToTarg = transform.position - activeEnemy.position;
-        if (distToTarg.magnitude < attackRange - .1f)
-            playerInAttackRange = true;
+
+        if (distToTarg.magnitude < attackRange - .5f) 
+        { 
+            playerInAttackRange = true; 
+            agent.isStopped = true; 
+        }
 
         if (distToTarg.magnitude > DOV)
         {
@@ -226,21 +241,16 @@ public class enemyAI : MonoBehaviour
             activeEnemy = null;
             enemyAcquired = false;
         }
-
-
     }
-
-    
 
     private void AttackPlayer()
     {
         Vector3 distToTarg = transform.position - activeEnemy.position;
-        if (distToTarg.magnitude > attackRange)
-            playerInAttackRange = false;
+        if (distToTarg.magnitude > attackRange) playerInAttackRange = false;
 
-        if (distToTarg.magnitude > DOV)
-            enemyAcquired = false;
-
+        //if (distToTarg.magnitude > DOV) enemyAcquired = false;
+        //transform.TransformDirection(activeEnemy.position); // !!!!!!!!!!
+        transform.forward = activeEnemy.position - transform.position;
         if (!alreadyAttacked)
         {
             ///Attack code
@@ -260,7 +270,7 @@ public class enemyAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        /*
+        
         // Attack range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
@@ -283,7 +293,7 @@ public class enemyAI : MonoBehaviour
         Gizmos.color = Color.red;
         if (enemyAcquired)
             Gizmos.DrawLine(transform.position, activeEnemy.position);
-        */
+        
 
         //Path waypoints
         if(pathHolder)
