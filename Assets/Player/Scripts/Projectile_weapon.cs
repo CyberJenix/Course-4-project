@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Projectile_weapon : MonoBehaviour
 {
@@ -21,8 +24,7 @@ public class Projectile_weapon : MonoBehaviour
     [SerializeField] private int bulletsShot;
 
     //bool checks
-    [SerializeField] internal bool shooting, readyToShoot, reloading; 
-    public bool bot;
+    [SerializeField] private bool shooting, readyToShoot, reloading;
 
     //References
     [SerializeField] private Camera camera;
@@ -38,7 +40,7 @@ public class Projectile_weapon : MonoBehaviour
     {
         controls = new PlayerControls();
         controls.WorldActions.Enable();
-        // full magazine
+        //full magazine
 
         bulletsLeft = magazineSize;
 
@@ -48,26 +50,43 @@ public class Projectile_weapon : MonoBehaviour
 
     private void Input()
     {
-        // Check if allowed to hold fire button and take corresponding input
+
+        
+
+        //Check if allowed to hold fire button and take corresponding input
         if (allowButtonHold)
         {
-            controls.WorldActions.Shoot.started  += context => shooting = true;
-            controls.WorldActions.Shoot.canceled += context => shooting = false;
-        }
-        else
-        {
-            controls.WorldActions.Shoot.performed += context =>
-            {
-                shooting = true;
-                Invoke("StopShooting", timeBetweenShots);
-            };
+            controls.WorldActions.Shoot.started +=
+                  context =>
+                  {
+                      shooting = true;
+                  };
+
+            controls.WorldActions.Shoot.canceled +=
+                 context =>
+                 {
+                     shooting = false;
+                 };
         }
 
-        // Shooting
+        else
+        {
+            controls.WorldActions.Shoot.performed +=
+                context =>
+                {
+                    shooting = true;
+
+                    Invoke("StopShooting", timeBetweenShots);
+                };
+
+        }
+
+        //Shooting
         if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
         {
-            // Set bullets shot to 0
+            //Set bullets shot to 0
             bulletsShot = 0;
+
             Shoot();
         }
 
@@ -78,27 +97,13 @@ public class Projectile_weapon : MonoBehaviour
         }
     }
 
-    private Ray ShotDir() 
-    {
-        Ray ray;
-        if(!bot)
-        {
-            //Find hit position using raycast
-            ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5.0f);
-            return ray;
-        }
-        ray = new Ray(transform.position, -transform.forward);
-        Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5.0f);
-        return ray;
-    }
-
     private void Shoot()
     {
         readyToShoot = false;
 
-        Ray ray = ShotDir();
-
+        //Find hit position using raycast
+        Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 5.0f);
         RaycastHit hit;
 
         //check if ray hits something
@@ -170,8 +175,7 @@ public class Projectile_weapon : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
-        if (!bot)
-            Input();
+    {
+        Input();
     }
 }

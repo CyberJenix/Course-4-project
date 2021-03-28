@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] public float health,hunger,thirst; // Show in UI
-    [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt = 0.02f, thirstDt = 0.02f;
+    [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt =0.02f, thirstDt=0.02f;
     [SerializeField] private bool isDead = false;
-    [SerializeField] public bool isSlotFull = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,6 @@ public class PlayerStats : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            health = 0;
             isDead = true;
         }
     }
@@ -53,20 +53,7 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hunger -= hungerDt * Time.deltaTime;
-        thirst -= thirstDt * Time.deltaTime;
-
-        if (hunger <= 0)
-        {
-            hunger = 0;
-            TakeDamage(hungerDt * Time.deltaTime);
-        }
-
-        if (thirst <= 0)
-        {
-            thirst = 0;
-            TakeDamage(thirstDt * Time.deltaTime);
-        }
-
+        hunger = hunger - hungerDt * Time.deltaTime;
+        thirst = thirst - thirstDt * Time.deltaTime;
     }
 }
