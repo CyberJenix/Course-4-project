@@ -265,6 +265,7 @@ MonoBehaviour:
   hungerDt: 0.02
   thirstDt: 0.02
   isDead: 0
+  isSlotFull: 0
 --- !u!114 &1931836567610898291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,7 +294,7 @@ MonoBehaviour:
   moveSmoothTime: 0.25
   jumpHeight: 1.5
   groundCheck: {fileID: 1931836567112713253}
-  groundDistance: 0.6
+  groundDistance: 0.3
   groundMask:
     serializedVersion: 2
     m_Bits: 1024

@@ -6,57 +6,60 @@ using UnityEngine.AI;
 public class enemyAI : MonoBehaviour
 {
     // Generic variables
+    private Rigidbody body;
+    private EnemyStats stats;
     private NavMeshAgent agent;
     [SerializeField] private float speed;
     [SerializeField] private float angularSpeed;
-    [SerializeField] private Rigidbody body;
-    [SerializeField] private EnemyStats stats;
-    [SerializeField] private CapsuleCollider eCollider;
-
-    [SerializeField] private LayerMask isDefault;
+    
+    
+    private LayerMask isDefault;
     [SerializeField] private LayerMask isGround, isPlayer;
 
-    [SerializeField] private Transform activeEnemy;
+     private Transform activeEnemy;
     [SerializeField] private List<Transform> targets = new List<Transform>();
 
     // Patroling
-    [SerializeField] private bool walkPointSet;
+    private bool walkPointSet;
     [SerializeField] private Transform pathHolder;
-    [SerializeField] private Vector3[] waypoints;
-    [SerializeField] private Vector3 curWayPoint;
-    [SerializeField] private int curWaypointIndex, newWayPointIndex;
-    [SerializeField] private bool walkForward, busy;
+    private Vector3[] waypoints;
+    private Vector3 curWayPoint;
+    private int curWaypointIndex, newWayPointIndex;
+    private bool walkForward, busy;
     [SerializeField] private bool isPathClosed;
     [SerializeField] private float distanceThreshold;
     [SerializeField] private float delay;
 
     // Attacking
-    [SerializeField] private float timeBetweenAttacks;
-    [SerializeField] private bool alreadyAttacked, enemyAcquired;
+    private bool alreadyAttacked, enemyAcquired;
+    private Transform attackPoint;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform gun, hand;
+    [SerializeField] private float timeBetweenAttacks, spread, shootForce;
+    [SerializeField] private float attackRange;
+
 
     // Sensors
     [SerializeField] private float DOV;
     [SerializeField] private float FOV;
-    [SerializeField] private float attackRange;
 
     // State switch conditions
-    [SerializeField] private bool playersInSight, playerInAttackRange;
+    private bool playersInSight, playerInAttackRange;
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        hand        = gameObject.transform.Find("Hand");
+        gun         = gameObject.transform.Find("Hand/Gun");
+        attackPoint = gameObject.transform.Find("Hand/Gun/Barrel");
+
+        body        = GetComponent<Rigidbody>();
+        stats       = GetComponent<EnemyStats>();
+        agent       = GetComponent<NavMeshAgent>();
         agent.speed = speed;
         agent.angularSpeed = angularSpeed;
 
-        body = GetComponent<Rigidbody>();
-        body.isKinematic = false;
-
-        eCollider = GetComponent<CapsuleCollider>();
-
-        stats = GetComponent<EnemyStats>();
-
         isDefault = LayerMask.GetMask("Default");
-        StartCoroutine("FindWithDelay", .5f);
+        StartCoroutine("FindWithDelay", 1f);
         enemyAcquired = false;
     }
 
@@ -85,8 +88,6 @@ public class enemyAI : MonoBehaviour
 
             if (playersInSight) AcquireNearestTarget();
 
-
-
             if (!playersInSight && !playerInAttackRange) Patrolling();
             if (enemyAcquired && !playerInAttackRange) ChasePlayer();
             if (enemyAcquired && playerInAttackRange) AttackPlayer();
@@ -94,6 +95,7 @@ public class enemyAI : MonoBehaviour
         }
         agent.isStopped     = true;
         body.isKinematic    = true;
+        body.useGravity     = true;
         Destroy(gameObject, 10.0f);
 
 
@@ -171,16 +173,16 @@ public class enemyAI : MonoBehaviour
 
         Vector3 temp = new Vector3(x, transform.position.y + 100.0f, z);
         Vector3 down = new Vector3(x, transform.position.y, z);
-        
+
         Ray ray = new Ray(temp, down);
 
         Physics.Raycast(ray, out RaycastHit hit, isGround);
 
-        float y = transform.position.y + hit.distance;
+        float y = transform.position.y - hit.distance;
 
         curWayPoint = new Vector3(x, y, z);
 
-        if (Physics.Raycast(curWayPoint, -transform.up, 2f, isGround))
+        //if (Physics.Raycast(curWayPoint, -transform.up, 2f, isGround))
             walkPointSet = true;
     }
 
@@ -248,19 +250,40 @@ public class enemyAI : MonoBehaviour
         Vector3 distToTarg = transform.position - activeEnemy.position;
         if (distToTarg.magnitude > attackRange) playerInAttackRange = false;
 
-        //if (distToTarg.magnitude > DOV) enemyAcquired = false;
-        //transform.TransformDirection(activeEnemy.position); // !!!!!!!!!!
-        transform.forward = activeEnemy.position - transform.position;
+        Vector3 diff = activeEnemy.position - transform.position;
+        float angleH = Mathf.Atan2(diff.x, diff.z);
+        hand.forward = new Vector3(Mathf.Sin(angleH), 0, Mathf.Cos(angleH));
+
         if (!alreadyAttacked)
         {
-            ///Attack code
-            
-            
-            ///
+            // Attack code
+             
+            Shoot();
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
+    }
+
+    private void Shoot()
+    {
+        Vector3 directionWithoutSpread = activeEnemy.position - attackPoint.position;
+
+        //Calculate spread
+        float x = Random.Range(-spread, spread);
+        float y = Random.Range(-spread, spread);
+
+        //Calculate new direction with spread
+        Vector3 directionWithSpread = directionWithoutSpread + new Vector3(x, y, 0);
+
+        //Instantiate projectile
+        GameObject currentBullet = Instantiate(bullet, attackPoint.position, Quaternion.identity);
+
+        //Rotate projectile to shoot direction
+        currentBullet.transform.forward = directionWithSpread.normalized;
+
+        //Add forces to bullet
+        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * shootForce, ForceMode.Impulse);
     }
 
     private void ResetAttack()
