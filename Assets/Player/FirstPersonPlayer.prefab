@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1931836567112713254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.862, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1931836567610898301}
@@ -237,8 +237,8 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.9
+  m_Radius: 0.6
   m_SlopeLimit: 45
   m_StepOffset: 0.7
   m_SkinWidth: 0.08
@@ -265,7 +265,6 @@ MonoBehaviour:
   hungerDt: 0.02
   thirstDt: 0.02
   isDead: 0
-  isSlotFull: 0
 --- !u!114 &1931836567610898291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,21 +279,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1931836567268201128}
   cameraOffset: 0.514
-  crouchHeight: 1
-  proneHeight: 0.75
+  crouchHeight: 0.95
+  proneHeight: 0.55
   targetHeight: 0
-  movementSpeed: 10
-  walkSpeed: 10
-  runSpeed: 20
-  crouchSpeed: 5
-  proneSpeed: 3
+  movementSpeed: 5
+  walkSpeed: 5
+  runSpeed: 10
+  crouchSpeed: 2.5
+  proneSpeed: 1.5
   timeToCrouch: 5
   timeToProne: 0.9
   gravity: -21
   moveSmoothTime: 0.25
-  jumpHeight: 1.5
+  jumpHeight: 3
   groundCheck: {fileID: 1931836567112713253}
-  groundDistance: 0.3
+  groundDistance: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 1024
