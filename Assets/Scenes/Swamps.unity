@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -506,6 +506,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1931836567112713253, guid: 697ca555b50823145a418beb1a9b5829,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.66
+      objectReference: {fileID: 0}
     - target: {fileID: 1931836567610898301, guid: 697ca555b50823145a418beb1a9b5829,
         type: 3}
       propertyPath: m_RootOrder
@@ -568,6 +573,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 697ca555b50823145a418beb1a9b5829, type: 3}
+--- !u!20 &98923485 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1931836567268201128, guid: 697ca555b50823145a418beb1a9b5829,
+    type: 3}
+  m_PrefabInstance: {fileID: 98923484}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &98923486 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1931836567268201135, guid: 697ca555b50823145a418beb1a9b5829,
+    type: 3}
+  m_PrefabInstance: {fileID: 98923484}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &98923487 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1931836567279955405, guid: 697ca555b50823145a418beb1a9b5829,
+    type: 3}
+  m_PrefabInstance: {fileID: 98923484}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &98923488 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1931836567610898290, guid: 697ca555b50823145a418beb1a9b5829,
+    type: 3}
+  m_PrefabInstance: {fileID: 98923484}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4576197a3e1f049a5b16a4725f3d12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &98923489 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1931836567610898301, guid: 697ca555b50823145a418beb1a9b5829,
+    type: 3}
+  m_PrefabInstance: {fileID: 98923484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &99997410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9884,6 +9925,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6288853897882202404, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 98923485}
+    - target: {fileID: 6288853897882202405, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 98923486}
+    - target: {fileID: 6288853897882202405, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 98923489}
+    - target: {fileID: 6288853897882202405, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
+        type: 3}
+      propertyPath: gunContainer
+      value: 
+      objectReference: {fileID: 98923487}
     - target: {fileID: 6288853897882202406, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
         type: 3}
       propertyPath: m_Name
@@ -9892,7 +9953,7 @@ PrefabInstance:
     - target: {fileID: 6288853897882202407, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6288853897882202407, guid: 6e14eac746c7d9441b7da84d2fdef5f4,
         type: 3}
@@ -9959,7 +10020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 430610, guid: cc8c6187150da4a4a859c1f7ef948598, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 430610, guid: cc8c6187150da4a4a859c1f7ef948598, type: 3}
       propertyPath: m_LocalPosition.x
@@ -12175,6 +12236,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: WalkieTalkie
       objectReference: {fileID: 0}
+    - target: {fileID: 6713240230212295733, guid: 3ec80eaf3197b5147b436b99fed50541,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 98923486}
+    - target: {fileID: 6713240230212295733, guid: 3ec80eaf3197b5147b436b99fed50541,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 98923489}
+    - target: {fileID: 6713240230212295733, guid: 3ec80eaf3197b5147b436b99fed50541,
+        type: 3}
+      propertyPath: gunContainer
+      value: 
+      objectReference: {fileID: 98923487}
+    - target: {fileID: 6713240230212295734, guid: 3ec80eaf3197b5147b436b99fed50541,
+        type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 98923485}
+    - target: {fileID: 6713240230212295734, guid: 3ec80eaf3197b5147b436b99fed50541,
+        type: 3}
+      propertyPath: attackPoint
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713240230212295734, guid: 3ec80eaf3197b5147b436b99fed50541,
+        type: 3}
+      propertyPath: playerStats
+      value: 
+      objectReference: {fileID: 98923488}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ec80eaf3197b5147b436b99fed50541, type: 3}
 --- !u!1001 &1821183224
