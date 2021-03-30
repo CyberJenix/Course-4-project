@@ -28,7 +28,6 @@ public class PickUpAndDrop : MonoBehaviour
         controls.WorldActions.Interact.performed += context => PickUp();
         controls.WorldActions.Drop.performed += context => Drop();
         playerStats = player.GetComponent<PlayerStats>();
-
         if (!equipped)
         {
             gun_script.enabled      = false;
@@ -43,7 +42,6 @@ public class PickUpAndDrop : MonoBehaviour
             collider.isTrigger      = true;
          //   recover_item.Input();
         }
-
 
     }
 

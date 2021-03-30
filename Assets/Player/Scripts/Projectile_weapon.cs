@@ -31,8 +31,8 @@ public class Projectile_weapon : MonoBehaviour
     //bug fixing
     public bool allowInvoke = true;
 
+  
 
-    
 
     private void Awake()
     {
@@ -43,6 +43,8 @@ public class Projectile_weapon : MonoBehaviour
         bulletsLeft = magazineSize;
 
         readyToShoot = true;
+
+
     }
 
 
