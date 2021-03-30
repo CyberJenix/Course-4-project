@@ -6,21 +6,22 @@ public class RecoverItem : Projectile_weapon
 {
     [SerializeField] PlayerStats playerStats;
     [SerializeField] PickUpAndDrop equipScript;
-    [SerializeField] private float heal,food,water;
+    [SerializeField] private float heal,food,water,score;
 
     // Start is called before the first frame update
     void Start()
     {
-        controls.WorldActions.Shoot.performed += context => Input();
+        
     }
 
-    new private void Input()
+    new public void Input()
     {
         if (magazineSize > 0)
         {
          playerStats.Heal(heal);
          playerStats.Eat(food);
          playerStats.Drink(water);
+         playerStats.AddScore(score);
          magazineSize--;
 
         }
@@ -30,5 +31,9 @@ public class RecoverItem : Projectile_weapon
     // Update is called once per frame
     void Update()
     {
+        if (equipScript.equipped = true)
+        {
+            controls.WorldActions.Shoot.performed += context => Input();
+        }
     }
 }

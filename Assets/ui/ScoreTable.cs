@@ -13,34 +13,14 @@ public class ScoreTable : MonoBehaviour
 {
     private Transform entries;
     private Transform entryTemplate;
+    [SerializeField ]private PlayerStats ps;
+
+   // private void 
 
     private void Awake() {
-        // результат игры, отправляется на сервер
-        string[] userScoreArr = new[] { "2421", "User" }; 
 
-        int cols = 2;
 
-        // передаем на сервер статистику пользователя и получаем в ответ общую статистику
-        string[,] scoreArr = someDBStuff(userScoreArr);
-
-        // шаблон для записи
-        entries = transform.Find("bg").Find("entries");
-        entryTemplate = entries.Find("entryTemplate");
-
-        entryTemplate.gameObject.SetActive(false);
-
-        // заполнение таблицы
-        float templateHeight = 50f;
-        for (int i = 0; i < scoreArr.Length/cols; i++){
-            Transform entryTransform = Instantiate(entryTemplate, entries);
-            RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
-            entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight*i);
-            entryTransform.gameObject.SetActive(true);
-
-            entryTransform.Find("TextEntryPos").GetComponent<Text>().text = (i+1).ToString();
-            entryTransform.Find("TextEntryScore").GetComponent<Text>().text = scoreArr[i, 0];
-            entryTransform.Find("TextEntryName").GetComponent<Text>().text = scoreArr[i, 1];
-        }
+       
     }
 
     // для обработки полученного массива
@@ -106,7 +86,36 @@ public class ScoreTable : MonoBehaviour
     }
 
         // Start is called before the first frame update
-        // void Start(){ }
+         void Start(){
+        // результат игры, отправляется на сервер
+        string[] userScoreArr = new[] { ps.score.ToString(), "User" };//{ "2421", "User" }; 
+
+        int cols = 2;
+
+        // передаем на сервер статистику пользователя и получаем в ответ общую статистику
+        string[,] scoreArr = someDBStuff(userScoreArr);
+
+        // шаблон для записи
+        entries = transform.Find("bg").Find("entries");
+        entryTemplate = entries.Find("entryTemplate");
+
+        entryTemplate.gameObject.SetActive(false);
+
+        // заполнение таблицы
+        float templateHeight = 50f;
+        for (int i = 0; i < scoreArr.Length / cols; i++)
+        {
+            Transform entryTransform = Instantiate(entryTemplate, entries);
+            RectTransform entryRectTransform = entryTransform.GetComponent<RectTransform>();
+            entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * i);
+            entryTransform.gameObject.SetActive(true);
+
+            entryTransform.Find("TextEntryPos").GetComponent<Text>().text = (i + 1).ToString();
+            entryTransform.Find("TextEntryScore").GetComponent<Text>().text = scoreArr[i, 0];
+            entryTransform.Find("TextEntryName").GetComponent<Text>().text = scoreArr[i, 1];
+        }
+
+    }
 
         // Update is called once per frame
         // void Update(){ }

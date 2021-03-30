@@ -27,6 +27,11 @@ PrefabInstance:
       propertyPath: maxCollisions
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3830178239482404406, guid: ca3c743206d05ee4db907f27b4892858,
+        type: 3}
+      propertyPath: whatIsEnemies.m_Bits
+      value: 768
+      objectReference: {fileID: 0}
     - target: {fileID: 5697041007061256066, guid: ca3c743206d05ee4db907f27b4892858,
         type: 3}
       propertyPath: m_Name

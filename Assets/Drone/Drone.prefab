@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4447979022795605}
   m_LocalRotation: {x: -6.123231e-17, y: -0.00000058114523, z: -6.1232376e-17, w: -1}
-  m_LocalPosition: {x: 0, y: -0.012, z: 1.241}
+  m_LocalPosition: {x: -0, y: -0.012, z: 1.723}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6486150569902971700}
@@ -207,9 +207,9 @@ GameObject:
   - component: {fileID: 2031065672672722530}
   - component: {fileID: 2031065672672722559}
   - component: {fileID: 2031065672672722558}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Drone
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -308,8 +308,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.54, y: 0.65, z: 1.63}
-  m_Center: {x: -2.5494e-41, y: -0.57, z: 0.54}
+  m_Size: {x: 0.54, y: 0.65, z: 1.3711277}
+  m_Center: {x: -2.1994247e-24, y: -0.57, z: 0.4105639}
 --- !u!65 &2031065672672722556
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -359,40 +359,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4.5
   angularSpeed: 120
-  body: {fileID: 0}
-  stats: {fileID: 0}
-  gun: {fileID: 0}
-  hand: {fileID: 0}
-  isDefault:
-    serializedVersion: 2
-    m_Bits: 0
   isGround:
     serializedVersion: 2
     m_Bits: 1024
   isPlayer:
     serializedVersion: 2
     m_Bits: 256
-  activeEnemy: {fileID: 0}
   targets: []
-  walkPointSet: 0
   pathHolder: {fileID: 0}
-  waypoints: []
-  curWayPoint: {x: 0, y: 0, z: 0}
-  curWaypointIndex: 0
-  newWayPointIndex: 0
-  walkForward: 0
-  busy: 0
   isPathClosed: 0
   distanceThreshold: 2
   delay: 2
+  bullet: {fileID: 0}
+  gun: {fileID: 0}
+  hand: {fileID: 0}
   timeBetweenAttacks: 1
-  alreadyAttacked: 0
-  enemyAcquired: 0
+  spread: 0
+  shootForce: 200
+  attackRange: 7
   DOV: 10
   FOV: 65
-  attackRange: 7
-  playersInSight: 0
-  playerInAttackRange: 0
 --- !u!114 &2031065672672722558
 MonoBehaviour:
   m_ObjectHideFlags: 0

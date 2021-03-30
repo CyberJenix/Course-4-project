@@ -205,7 +205,7 @@ GameObject:
   - component: {fileID: 1931836567610898291}
   m_Layer: 8
   m_Name: FirstPersonPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -265,6 +265,7 @@ MonoBehaviour:
   hungerDt: 0.02
   thirstDt: 0.02
   isDead: 0
+  isSlotFull: 0
 --- !u!114 &1931836567610898291
 MonoBehaviour:
   m_ObjectHideFlags: 0

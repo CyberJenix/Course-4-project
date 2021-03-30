@@ -2,7 +2,7 @@
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] public float health,hunger,thirst; // Show in UI
+    [SerializeField] public float health,hunger,thirst,score; // Show in UI
     [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt = 0.02f, thirstDt = 0.02f;
     [SerializeField] private bool isDead = false;
     [SerializeField] public bool isSlotFull = false;
@@ -21,6 +21,11 @@ public class PlayerStats : MonoBehaviour
             health = 0;
             isDead = true;
         }
+    }
+
+    public void AddScore(float g_score)
+    {
+        score = score + g_score;
     }
 
     public void Heal(float heal)

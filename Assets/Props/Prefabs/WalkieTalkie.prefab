@@ -75,6 +75,7 @@ MonoBehaviour:
   shooting: 0
   readyToShoot: 0
   reloading: 0
+  bot: 0
   camera: {fileID: 0}
   attackPoint: {fileID: 0}
   allowInvoke: 1
@@ -83,6 +84,7 @@ MonoBehaviour:
   heal: 0
   food: 0
   water: 0
+  score: 100
 --- !u!114 &6713240230212295733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,6 +103,7 @@ MonoBehaviour:
   player: {fileID: 0}
   gunContainer: {fileID: 0}
   camera: {fileID: 0}
+  playerStats: {fileID: 0}
   pickUpRange: 2
   dropForwardForce: 2
   dropUpwardForce: 2

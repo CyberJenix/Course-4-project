@@ -15,12 +15,14 @@ public class PickUpAndDrop : MonoBehaviour
     [SerializeField] private float pickUpRange;
     [SerializeField] private float dropForwardForce, dropUpwardForce;
     [SerializeField] internal bool equipped;
+
     //[SerializeField] private static bool slotFull; //static - changind this in one script will change in all otherscripts
     [SerializeField] Vector3 distanceToPlayer, drop_velocity;
 
     // Start is called before the first frame update
     void Start()
     {
+      //  recover_item = gameObject.GetComponent<RecoverItem>();
         controls = new PlayerControls();
         controls.WorldActions.Enable();
         controls.WorldActions.Interact.performed += context => PickUp();
@@ -32,13 +34,17 @@ public class PickUpAndDrop : MonoBehaviour
             gun_script.enabled      = false;
             rigidBody.isKinematic   = false;
             collider.isTrigger      = false;
+
         }
         if (equipped)
         {
             gun_script.enabled      = true;
             rigidBody.isKinematic   = true;
             collider.isTrigger      = true;
+         //   recover_item.Input();
         }
+
+
     }
 
     private void PickUp()

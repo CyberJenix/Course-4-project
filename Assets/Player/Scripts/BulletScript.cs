@@ -48,6 +48,16 @@ public class BulletScript : MonoBehaviour
         if (collision.collider.CompareTag("Enemy") && onTouch)
         {
             collision.gameObject.GetComponent<EnemyStats>().TakeDamage(damage);
+            Debug.Log("Hit enemy");
+            Delay(); // Destroy if bullet hits an enemy
+
+        }
+
+        else
+        if (collision.collider.CompareTag("Player") && onTouch)
+        {
+            collision.gameObject.GetComponent<PlayerStats>().TakeDamage(damage);
+            Debug.Log("Hit player");
             Delay(); // Destroy if bullet hits an enemy
 
         }
