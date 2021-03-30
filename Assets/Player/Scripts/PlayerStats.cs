@@ -4,7 +4,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] public float health,hunger,thirst,score; // Show in UI
     [SerializeField] private float maxHealth, maxHunger, maxThirst, hungerDt = 0.02f, thirstDt = 0.02f;
-    [SerializeField] private bool isDead = false;
+    [SerializeField] public bool isDead = false;
     [SerializeField] public bool isSlotFull = false;
 
     // Start is called before the first frame update

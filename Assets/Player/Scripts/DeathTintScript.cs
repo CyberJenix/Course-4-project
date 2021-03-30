@@ -2,18 +2,22 @@
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class DeathTintScript : MonoBehaviour
 {
     private PlayerControls controls;
-    private PlayerStats characterStats;
+    public PlayerStats ps;
+    [SerializeField] Volume red;
     // Start is called before the first frame update
     void Start()
     {
         controls = new PlayerControls();
         controls.Enable();
         controls.WorldActions.ReloadScene.performed += context => ReloadScene();
-        characterStats = GetComponent<PlayerStats>();
+        ps = gameObject.GetComponent<PlayerStats>();
     }
 
     private void ReloadScene()
@@ -26,9 +30,9 @@ public class DeathTintScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (characterStats.isDead == true)
+        if (ps.isDead)
         {
-            Volume.enabled = true;
+            red.enabled = true;
         }
     }
 }
